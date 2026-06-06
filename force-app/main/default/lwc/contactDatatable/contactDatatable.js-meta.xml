@@ -7,9 +7,4 @@
         <target>lightning__RecordPage</target>
         <target>lightning__HomePage</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__AppPage,lightning__HomePage">
-            <property name="title" type="String" label="Card Title" default="Contacts"/>
-        </targetConfig>
-    </targetConfigs>
 </LightningComponentBundle>
