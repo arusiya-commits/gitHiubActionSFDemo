@@ -25,11 +25,19 @@ jobs:
 
       - name: Deploy Metadata
         run: |
-          sf project deploy start \
+          OUTPUT=$(sf project deploy start \
             --source-dir force-app \
             --target-org target-org \
             --test-level RunLocalTests \
-            --wait 30
+            --wait 30 2>&1) || {
+            if echo "$OUTPUT" | grep -q "NothingToDeploy"; then
+              echo "No metadata to deploy — skipping."
+              exit 0
+            fi
+            echo "$OUTPUT"
+            exit 1
+          }
+          echo "$OUTPUT"
 
       - name: Report Deploy Result
         if: always()
