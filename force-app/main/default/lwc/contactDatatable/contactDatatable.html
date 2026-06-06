@@ -9,10 +9,10 @@
                 <p class="slds-text-color_error">{error}</p>
             </template>
 
-            <template if:true={contacts.data}>
+            <template if:true={contacts}>
                 <lightning-datatable
                     key-field="Id"
-                    data={contacts.data}
+                    data={contacts}
                     columns={columns}
                     hide-checkbox-column>
                 </lightning-datatable>

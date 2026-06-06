@@ -1,0 +1,15 @@
+{
+  "trailingComma": "none",
+  "singleQuote": true,
+  "tabWidth": 4,
+  "printWidth": 120,
+  "plugins": ["prettier-plugin-apex"],
+  "overrides": [
+    {
+      "files": "*.{cls,trigger,apex}",
+      "options": {
+        "parser": "apex"
+      }
+    }
+  ]
+}
