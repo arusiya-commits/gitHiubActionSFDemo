@@ -147,18 +147,27 @@ jobs:
 
       - name: Validate XML metadata files
         run: |
-          ERRORS=0
-          while IFS= read -r -d '' file; do
-            if ! xmllint --noout --nonet "$file" 2>/dev/null; then
-              echo "Invalid XML: $file"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done < <(find force-app -name "*.xml" -print0)
-          if [ "$ERRORS" -gt 0 ]; then
-            echo "$ERRORS XML file(s) failed validation."
-            exit 1
-          fi
-          echo "All XML files are valid."
+          python3 - <<'EOF'
+          import os, sys
+          import xml.etree.ElementTree as ET
+
+          errors = []
+          for root, dirs, files in os.walk('force-app'):
+              for f in files:
+                  if f.endswith('.xml'):
+                      path = os.path.join(root, f)
+                      try:
+                          ET.parse(path)
+                      except ET.ParseError as e:
+                          errors.append(f"{path}: {e}")
+
+          if errors:
+              print(f"{len(errors)} XML file(s) failed validation:")
+              for e in errors:
+                  print(f"  {e}")
+              sys.exit(1)
+          print(f"All XML files are valid.")
+          EOF
 
   # ── 8. Salesforce check-only deploy + Apex tests ─────────────────────────
   sf-validate:

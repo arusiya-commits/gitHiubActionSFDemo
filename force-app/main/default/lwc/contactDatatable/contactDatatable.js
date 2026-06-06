@@ -22,7 +22,7 @@ export default class ContactDatatable extends LightningElement {
     wiredContacts({ error, data }) {
         if (data) {
             this.contacts = {
-                data: data.records.records.map(record => ({
+                data: data.records.records.map((record) => ({
                     Id: record.id,
                     Name: record.fields.Name?.value,
                     Email: record.fields.Email?.value,

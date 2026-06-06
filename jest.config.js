@@ -1,9 +1,7 @@
-const { jestConfig } = require('@lwc/jest-preset');
-
+/** @type {import('jest').Config} */
 module.exports = {
-    ...jestConfig,
+    preset: '@lwc/jest-preset',
     modulePathIgnorePatterns: ['<rootDir>/.localdevserver'],
-    setupFiles: ['<rootDir>/jest.setup.js'],
     coverageThreshold: {
         global: {
             lines: 75
