@@ -3,3 +3,4 @@
 **/.sf/**
 node_modules/
 **/*.xml
+force-app/**/*.html

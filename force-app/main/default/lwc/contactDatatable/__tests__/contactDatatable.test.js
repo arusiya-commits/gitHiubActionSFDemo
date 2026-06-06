@@ -1,36 +1,25 @@
 import { createElement } from 'lwc';
 import ContactDatatable from 'c/contactDatatable';
-import { getListUi } from 'lightning/uiListApi';
-import { registerLdsTestWireAdapter } from '@salesforce/wire-service-jest-util';
+import getContacts from '@salesforce/apex/ContactController.getContacts';
 
-const getListUiAdapter = registerLdsTestWireAdapter(getListUi);
-
-const MOCK_CONTACTS = {
-    records: {
-        records: [
-            {
-                id: '0031000001',
-                fields: {
-                    Name: { value: 'John Doe' },
-                    Email: { value: 'john@example.com' },
-                    Phone: { value: '555-1234' },
-                    Title: { value: 'Engineer' },
-                    Account: { value: { fields: { Name: { value: 'Acme Corp' } } } }
-                }
-            },
-            {
-                id: '0031000002',
-                fields: {
-                    Name: { value: 'Jane Smith' },
-                    Email: { value: 'jane@example.com' },
-                    Phone: { value: '555-5678' },
-                    Title: { value: 'Manager' },
-                    Account: { value: null }
-                }
-            }
-        ]
+const MOCK_CONTACTS = [
+    {
+        Id: '0031000001',
+        Name: 'John Doe',
+        Email: 'john@example.com',
+        Phone: '555-1234',
+        Title: 'Engineer',
+        Account: { Name: 'Acme Corp' }
+    },
+    {
+        Id: '0031000002',
+        Name: 'Jane Smith',
+        Email: 'jane@example.com',
+        Phone: '555-5678',
+        Title: 'Manager',
+        Account: null
     }
-};
+];
 
 describe('c-contact-datatable', () => {
     afterEach(() => {
@@ -60,7 +49,7 @@ describe('c-contact-datatable', () => {
         const element = createElement('c-contact-datatable', { is: ContactDatatable });
         document.body.appendChild(element);
 
-        getListUiAdapter.emit(MOCK_CONTACTS);
+        getContacts.emit(MOCK_CONTACTS);
         await Promise.resolve();
 
         const datatable = element.shadowRoot.querySelector('lightning-datatable');
@@ -74,7 +63,7 @@ describe('c-contact-datatable', () => {
         const element = createElement('c-contact-datatable', { is: ContactDatatable });
         document.body.appendChild(element);
 
-        getListUiAdapter.emit(MOCK_CONTACTS);
+        getContacts.emit(MOCK_CONTACTS);
         await Promise.resolve();
 
         const datatable = element.shadowRoot.querySelector('lightning-datatable');
@@ -89,7 +78,7 @@ describe('c-contact-datatable', () => {
         const element = createElement('c-contact-datatable', { is: ContactDatatable });
         document.body.appendChild(element);
 
-        getListUiAdapter.emit(MOCK_CONTACTS);
+        getContacts.emit(MOCK_CONTACTS);
         await Promise.resolve();
 
         const datatable = element.shadowRoot.querySelector('lightning-datatable');
@@ -100,7 +89,7 @@ describe('c-contact-datatable', () => {
         const element = createElement('c-contact-datatable', { is: ContactDatatable });
         document.body.appendChild(element);
 
-        getListUiAdapter.error({ body: { message: 'Server error' } });
+        getContacts.error({ message: 'Server error' });
         await Promise.resolve();
 
         const error = element.shadowRoot.querySelector('p.slds-text-color_error');
@@ -114,7 +103,7 @@ describe('c-contact-datatable', () => {
         const element = createElement('c-contact-datatable', { is: ContactDatatable });
         document.body.appendChild(element);
 
-        getListUiAdapter.emit(MOCK_CONTACTS);
+        getContacts.emit(MOCK_CONTACTS);
         await Promise.resolve();
 
         const spinner = element.shadowRoot.querySelector('lightning-spinner');
