@@ -1,0 +1,36 @@
+name: Deploy to Org (on merge to main)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Metadata to Salesforce
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli@latest
+
+      - name: Authenticate to Salesforce Org
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > ./auth-url.txt
+          sf org login sfdx-url --sfdx-url-file ./auth-url.txt --alias target-org --set-default
+          rm -f ./auth-url.txt
+
+      - name: Deploy Metadata
+        run: |
+          sf project deploy start \
+            --source-dir force-app \
+            --target-org target-org \
+            --test-level RunLocalTests \
+            --wait 30
+
+      - name: Report Deploy Result
+        if: always()
+        run: echo "Deploy complete. Check logs above for details."
