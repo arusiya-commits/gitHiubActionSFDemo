@@ -149,7 +149,7 @@ jobs:
         run: |
           ERRORS=0
           while IFS= read -r -d '' file; do
-            if ! xmllint --noout "$file" 2>/dev/null; then
+            if ! xmllint --noout --nonet "$file" 2>/dev/null; then
               echo "Invalid XML: $file"
               ERRORS=$((ERRORS + 1))
             fi

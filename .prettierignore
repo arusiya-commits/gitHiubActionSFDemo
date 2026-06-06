@@ -2,3 +2,4 @@
 **/.sfdx/**
 **/.sf/**
 node_modules/
+**/*.xml
